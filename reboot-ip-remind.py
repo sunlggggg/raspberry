@@ -58,12 +58,20 @@ def get_ip_address():
  
  
 if __name__ == '__main__':
-  if check_network():
-    ipaddr = get_ip_address()
-    now = datetime.datetime.now()
-    time_info = now.strftime('%Y-%m-%d %A %H:%M:%S')
-    send_text = "Boot time: %s\nIP addr: %s" % (time_info, ipaddr)
-    sendEmail('smtp.sina.com','you email username ','your email password ','your emial address',['26677641@qq.com'], 'Raspberry Pi boot status', send_text)
-  else:
-    print "Sorry that I can't help without network"
-
+  ipold=""
+  while True:
+    if check_network():
+      ipaddr = get_ip_address()
+      print ipaddr 
+      if ipold == ipaddr:
+        time.sleep(120)
+        continue
+      else:
+        ipold = ipaddr 
+        now = datetime.datetime.now()
+        time_info = now.strftime('%Y-%m-%d %A %H:%M:%S')
+        send_text = "Boot time: %s\nIP addr: %s" % (time_info, ipaddr)
+        sendEmail('smtp.sina.com','username','password','email address',['2661377641@qq.com'], 'Raspberry Pi boot status', send_text)
+    else:
+      print "Sorry that I can't help without network"
+   
